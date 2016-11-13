@@ -4,6 +4,7 @@ namespace SnifferReport\Model;
 
 
 class Message implements \JsonSerializable {
+  private $messageId;
   private $message;
   private $source;
   private $severity;
@@ -23,98 +24,112 @@ class Message implements \JsonSerializable {
   }
 
   /**
-   * @return mixed
+   * @return int
+   */
+  public function getMessageId() {
+    return $this->messageId;
+  }
+
+  /**
+   * @param int $message_id
+   */
+  public function setMessageId($message_id) {
+    $this->messageId = $message_id;
+  }
+
+  /**
+   * @return string
    */
   public function getMessage() {
     return $this->message;
   }
 
   /**
-   * @param mixed $message
+   * @param string $message
    */
   public function setMessage($message) {
     $this->message = $message;
   }
 
   /**
-   * @return mixed
+   * @return string
    */
   public function getSource() {
     return $this->source;
   }
 
   /**
-   * @param mixed $source
+   * @param string $source
    */
   public function setSource($source) {
     $this->source = $source;
   }
 
   /**
-   * @return mixed
+   * @return int
    */
   public function getSeverity() {
     return $this->severity;
   }
 
   /**
-   * @param mixed $severity
+   * @param int $severity
    */
   public function setSeverity($severity) {
     $this->severity = $severity;
   }
 
   /**
-   * @return mixed
+   * @return string
    */
   public function getType() {
     return $this->type;
   }
 
   /**
-   * @param mixed $type
+   * @param string $type
    */
   public function setType($type) {
     $this->type = $type;
   }
 
   /**
-   * @return mixed
+   * @return int
    */
   public function getLine() {
     return $this->line;
   }
 
   /**
-   * @param mixed $line
+   * @param int $line
    */
   public function setLine($line) {
     $this->line = $line;
   }
 
   /**
-   * @return mixed
+   * @return int
    */
   public function getColumn() {
     return $this->column;
   }
 
   /**
-   * @param mixed $column
+   * @param int $column
    */
   public function setColumn($column) {
     $this->column = $column;
   }
 
   /**
-   * @return mixed
+   * @return boolean
    */
   public function isFixable() {
     return $this->fixable;
   }
 
   /**
-   * @param mixed $fixable
+   * @param boolean $fixable
    */
   public function setFixable($fixable) {
     $this->fixable = $fixable;
@@ -125,6 +140,7 @@ class Message implements \JsonSerializable {
    */
   function jsonSerialize() {
     return [
+      'message_id' => $this->getMessageId(),
       'message' => $this->getMessage(),
       'source' => $this->getSource(),
       'severity' => $this->getSeverity(),

@@ -1,5 +1,6 @@
 <?php
 
+require_once '../config.php';
 require_once '../vendor/autoload.php';
 
 // Generate an unique directory name to store files in.
@@ -12,13 +13,15 @@ use Silex\Application;
 $app = new Application();
 $app['debug'] = TRUE;
 
-$app->get('/', function() {
-  return "home";
-});
+$app['pdo'] = function() use ($config) {
+  $pdo = new \PDO($config['pdo_dsn'], $config['pdo_username'], $config['pdo_password']);
+  $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+  return $pdo;
+};
 
 // Receive files to be sniffed.
 // @todo: Make different urls for git url and files
-$app->post('/sniff', 'SnifferReport\\Controller\\MainController::receiveSniff');
+$app->post('/sniff', 'SnifferReport\\Controller\\MainController::processSniff');
 
 // @todo: View the complete result of a sniff.
 //$app->get('/sniffs/{sid}', function($sid) {});

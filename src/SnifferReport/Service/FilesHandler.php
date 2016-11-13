@@ -8,15 +8,32 @@ use \ZipArchive;
 
 
 abstract class FilesHandler {
+
+  /**
+   * Handles the given file
+   *
+   * @param $file_name
+   * @param $mime_type
+   *
+   * @return array
+   */
   public static function handle($file_name, $mime_type) {
+    // @todo: add support for other types of compressed files.
     if ($mime_type == 'application/zip') {
-      return self::handleZipFile($file_name);
+      return self::extractZipFile($file_name);
     }
 
     return [FILES_DIRECTORY_ROOT . '/' . $file_name];
   }
 
-  private static function handleZipFile($file_name) {
+  /**
+   * Extracts the given zip file.
+   *
+   * @param $file_name
+   *
+   * @return array
+   */
+  private static function extractZipFile($file_name) {
     $zip_file_uri = FILES_DIRECTORY_ROOT . '/' . $file_name;
 
     $zip = new ZipArchive();
@@ -31,6 +48,13 @@ abstract class FilesHandler {
     return self::scanFolder(FILES_DIRECTORY_ROOT);
   }
 
+  /**
+   * Scans folder to get all files inside.
+   *
+   * @param $dir
+   *
+   * @return array
+   */
   public static function scanFolder($dir) {
     $files = [];
     $finder = new Finder();

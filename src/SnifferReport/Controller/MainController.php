@@ -3,6 +3,7 @@
 namespace SnifferReport\Controller;
 
 use Silex\Application;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use SnifferReport\Service\Validator;
 use SnifferReport\Service\FilesHandler;
@@ -13,14 +14,23 @@ use Symfony\Component\Filesystem\Filesystem;
 use \Exception;
 
 class MainController {
-  public static function receiveSniff(Application $app, Request $request) {
+
+  /**
+   * Processes the POSTed data.
+   *
+   * @param Application $app
+   * @param Request $request
+   *
+   * @return JsonResponse
+   */
+  public static function processSniff(Application $app, Request $request) {
     $file = $request->files->get('file');
     $git_url = $request->get('git_url');
     $options = $request->get('options');
 
     $valid_git_url = (is_null($git_url) || !Validator::isGitUrl($git_url));
-
     if ($valid_git_url && is_null($file)) {
+      // @todo: make class to handle errors.
       return $app->json(json_decode('{"status":"error","message":"File or Git URL required"}'), 400);
     }
 
@@ -43,11 +53,18 @@ class MainController {
     $extensions = implode(',', $options->extensions);
     $sniff_result = Sniffer::sniffFiles($files, $standards, $extensions);
 
-    // Delete all files that were generated in this request to save server space.
+    // Delete all files that were generated in this request.
     $fs = new Filesystem();
     $fs->remove(FILES_DIRECTORY_ROOT);
 
-    $response = SniffParser::parseSniff($sniff_result);
+    try {
+      $sniffParser = new SniffParser($app['pdo']);
+      $response = $sniffParser->parseSniff($sniff_result);
+    }
+    catch (\PDOException $e) {
+      return $app->json(json_decode('{"status":"error","message":"Error when trying to save sniff: ' . $e->getMessage() . '"}'), 500);
+    }
+
     return $app->json($response, 200);
   }
 }

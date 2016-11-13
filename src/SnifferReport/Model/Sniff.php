@@ -4,6 +4,7 @@ namespace SnifferReport\Model;
 
 
 class Sniff implements \JsonSerializable {
+  private $sniffId;
   private $files = [];
 
   /**
@@ -13,6 +14,20 @@ class Sniff implements \JsonSerializable {
    */
   public function addFile(File $file) {
     $this->files[] = $file;
+  }
+
+  /**
+   * @return int
+   */
+  public function getSniffId() {
+    return $this->sniffId;
+  }
+
+  /**
+   * @param int $sniff_id
+   */
+  public function setSniffId($sniff_id) {
+    $this->sniffId = $sniff_id;
   }
 
   /**
@@ -26,6 +41,9 @@ class Sniff implements \JsonSerializable {
    * {@inheritdoc}
    */
   function jsonSerialize() {
-    return ['files' => $this->getFiles()];
+    return [
+      'sniff_id' => $this->getSniffId(),
+      'files' => $this->getFiles()
+    ];
   }
 }
