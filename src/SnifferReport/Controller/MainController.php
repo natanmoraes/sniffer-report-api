@@ -3,14 +3,15 @@
 namespace SnifferReport\Controller;
 
 use Silex\Application;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use SnifferReport\Exception\SnifferReportException;
+use SnifferReport\Model\Sniff;
 use SnifferReport\Service\Validator;
 use SnifferReport\Service\FilesHandler;
 use SnifferReport\Service\GitHandler;
 use SnifferReport\Service\Sniffer;
 use SnifferReport\Service\SniffParser;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 use \Exception;
 
 class MainController {
@@ -21,7 +22,9 @@ class MainController {
    * @param Application $app
    * @param Request $request
    *
-   * @return JsonResponse
+   * @return Sniff
+   *
+   * @throws SnifferReportException
    */
   public static function processSniff(Application $app, Request $request) {
     $file = $request->files->get('file');
@@ -30,8 +33,7 @@ class MainController {
 
     $valid_git_url = (is_null($git_url) || !Validator::isGitUrl($git_url));
     if ($valid_git_url && is_null($file)) {
-      // @todo: make class to handle errors.
-      return $app->json(json_decode('{"status":"error","message":"File or Git URL required"}'), 400);
+      throw new SnifferReportException('File or Git URL required', 400);
     }
 
     if (!is_null($file)) {
@@ -44,18 +46,18 @@ class MainController {
         $files = GitHandler::handle($git_url);
       }
       catch (Exception $e) {
-        return $app->json(json_decode('{"status":"error","message":"Error when trying to clone git repository: ' . $e->getMessage() . '"}'), 500);
+        throw new SnifferReportException("Error when trying to clone git repository: {$e->getMessage()}", 500);
       }
     }
 
     $options = json_decode($options);
 
     if (!Validator::areStandardsValid($options->standards)) {
-      return $app->json(json_decode('{"status":"error","message":"One or more standards are not valid. Please try again with different values."}'), 400);
+      throw new SnifferReportException('One or more standards are not valid. Please try again with different values', 400);
     }
 
     if (!Validator::areExtensionsValid($options->extensions)) {
-      return $app->json(json_decode('{"status":"error","message":"One or more extensions are not valid. Please try again with different values."}'), 400);
+      throw new SnifferReportException('One or more extensions are not valid. Please try again with different values', 400);
     }
 
     $standards = implode(',', $options->standards);
@@ -72,9 +74,9 @@ class MainController {
       $response = $sniffParser->parseSniff($sniff_result);
     }
     catch (\PDOException $e) {
-      return $app->json(json_decode('{"status":"error","message":"Error when trying to save sniff: ' . $e->getMessage() . '"}'), 500);
+      throw new SnifferReportException("Error when trying to save sniff: {$e->getMessage()}", 500);
     }
 
-    return $app->json($response, 200);
+    return $response;
   }
 }
