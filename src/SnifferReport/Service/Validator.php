@@ -2,6 +2,8 @@
 
 namespace SnifferReport\Service;
 
+use \PHP_CodeSniffer;
+
 abstract class Validator {
 
   /**
@@ -47,7 +49,7 @@ abstract class Validator {
    */
   public static function areStandardsValid(array $standards) {
     foreach ($standards as $standard) {
-      if (!in_array($standard, self::getSupportedStandards())) {
+      if (!in_array($standard, PHP_CodeSniffer::getInstalledStandards())) {
         return FALSE;
       }
     }
@@ -70,17 +72,6 @@ abstract class Validator {
     }
 
     return TRUE;
-  }
-
-  /**
-   * Gets supported standards.
-   */
-  private static function getSupportedStandards() {
-    return [
-      'Drupal',
-      'DrupalSecure',
-      'DrupalPractice',
-    ];
   }
 
   /**

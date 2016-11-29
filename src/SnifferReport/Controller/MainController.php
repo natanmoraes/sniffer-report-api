@@ -49,8 +49,18 @@ class MainController {
     }
 
     $options = json_decode($options);
+
+    if (!Validator::areStandardsValid($options->standards)) {
+      return $app->json(json_decode('{"status":"error","message":"One or more standards are not valid. Please try again with different values."}'), 400);
+    }
+
+    if (!Validator::areExtensionsValid($options->extensions)) {
+      return $app->json(json_decode('{"status":"error","message":"One or more extensions are not valid. Please try again with different values."}'), 400);
+    }
+
     $standards = implode(',', $options->standards);
     $extensions = implode(',', $options->extensions);
+
     $sniff_result = Sniffer::sniffFiles($files, $standards, $extensions);
 
     // Delete all files that were generated in this request.

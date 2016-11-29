@@ -33,7 +33,7 @@ abstract class Sniffer {
    * @param string $standards
    * @param string $extensions
    *
-   * @return null
+   * @return string|null
    */
   private static function sniffFile($file, $standards = '', $extensions = '') {
     $command = COMPOSER_VENDOR_DIR . '/bin/phpcs';
