@@ -1,4 +1,6 @@
 {
+  "name": "natanmoraes/sniffer-report-api",
+  "description": "API for running PHP CodeSniffer",
   "require": {
     "silex/silex": "~2.0",
     "gitonomy/gitlib": "~1.0",
