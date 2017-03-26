@@ -1,6 +1,5 @@
 <?php
 
-require_once '../config.php';
 require_once '../vendor/autoload.php';
 
 // Generate an unique directory name to store files in.
