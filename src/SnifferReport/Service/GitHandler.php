@@ -5,8 +5,8 @@ namespace SnifferReport\Service;
 use Gitonomy\Git\Admin;
 use Gitonomy\Git\Repository;
 
-
-abstract class GitHandler {
+abstract class GitHandler
+{
 
   /**
    * Handles git URLs.
@@ -15,13 +15,14 @@ abstract class GitHandler {
    *
    * @return array
    */
-  public static function handle($git_url) {
-    $parts = explode(' ', $git_url);
-    $url = $parts[0];
-    $branch = isset($parts[1]) ? $parts[1] : '';
+    public static function handle($git_url)
+    {
+        $parts = explode(' ', $git_url);
+        $url = $parts[0];
+        $branch = isset($parts[1]) ? $parts[1] : '';
 
-    return self::getFilesFromGitRepository($url, $branch);
-  }
+        return self::getFilesFromGitRepository($url, $branch);
+    }
 
   /**
    * Get files from a given git repository and branch (optional).
@@ -31,10 +32,11 @@ abstract class GitHandler {
    *
    * @return array
    */
-  private static function getFilesFromGitRepository($url, $branch = '') {
-    $repo = self::cloneGitRepository($url, $branch);
-    return FilesHandler::scanFolder($repo->getPath());
-  }
+    private static function getFilesFromGitRepository($url, $branch = '')
+    {
+        $repo = self::cloneGitRepository($url, $branch);
+        return FilesHandler::scanFolder($repo->getPath());
+    }
 
   /**
    * Clones a git repository.
@@ -44,18 +46,19 @@ abstract class GitHandler {
    *
    * @return Repository
    */
-  private static function cloneGitRepository($url, $branch = '') {
-    // Use shallow clone to save time.
-    $args = ['--depth', '1'];
+    private static function cloneGitRepository($url, $branch = '')
+    {
+        // Use shallow clone to save time.
+        $args = ['--depth', '1'];
 
-    if (!empty($branch)) {
-      // Clone from specific branch.
-      $args[] = '--branch';
-      $args[] = $branch;
+        if (!empty($branch)) {
+            // Clone from specific branch.
+            $args[] = '--branch';
+            $args[] = $branch;
+        }
+
+        $repository = Admin::cloneRepository(FILES_DIRECTORY_ROOT, $url, $args);
+
+        return $repository;
     }
-
-    $repository = Admin::cloneRepository(FILES_DIRECTORY_ROOT, $url, $args);
-
-    return $repository;
-  }
 }

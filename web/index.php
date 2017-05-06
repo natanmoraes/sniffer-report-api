@@ -14,12 +14,16 @@ use SnifferReport\Response\SnifferErrorResponse;
 use SnifferReport\Response\SnifferSuccessResponse;
 
 $app = new Application();
-$app['debug'] = TRUE;
+$app['debug'] = true;
 
-$app['pdo'] = function() use ($config) {
-  $pdo = new \PDO($config['pdo_dsn'], $config['pdo_username'], $config['pdo_password']);
-  $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-  return $pdo;
+$app['pdo'] = function () use ($config) {
+    $pdo = new \PDO(
+        $config['pdo_dsn'],
+        $config['pdo_username'],
+        $config['pdo_password']
+    );
+    $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    return $pdo;
 };
 
 // Receive files to be sniffed.
@@ -39,19 +43,22 @@ $app->post('/sniff', 'SnifferReport\\Controller\\MainController::processSniff');
 //$app->get('/sniffs/{sid}/files/{fid}/messages/{mid}', function($sid, $fid, $mid) {});
 
 // Main default response handler
-$app->view(function($response) use ($app) {
-  return new SnifferSuccessResponse($response);
+$app->view(function ($response) use ($app) {
+    return new SnifferSuccessResponse($response);
 });
 
 // Main error handler for expected problems.
-$app->error(function(SnifferReportException $e) use ($app) {
-  return new SnifferErrorResponse($e->getMessage(), $e->getCode());
+$app->error(function (SnifferReportException $e) use ($app) {
+    return new SnifferErrorResponse($e->getMessage(), $e->getCode());
 });
 
 // Generic error handler when something unexpected happens.
-$app->error(function(\Exception $e) use ($app) {
+$app->error(function (\Exception $e) use ($app) {
   // @todo: Add a log system with clearer messages for debug.
-  return new SnifferErrorResponse('An unexpected error occurred. Please contact the support', 500);
+    return new SnifferErrorResponse(
+        'An unexpected error occurred. Please contact the support',
+        500
+    );
 });
 
 $app->run();

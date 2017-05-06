@@ -6,8 +6,8 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use \ZipArchive;
 
-
-abstract class FilesHandler {
+abstract class FilesHandler
+{
 
   /**
    * Handles the given file
@@ -17,14 +17,15 @@ abstract class FilesHandler {
    *
    * @return array
    */
-  public static function handle($file_name, $mime_type) {
-    // @todo: add support for other types of compressed files.
-    if ($mime_type == 'application/zip') {
-      return self::extractZipFile($file_name);
-    }
+    public static function handle($file_name, $mime_type)
+    {
+        // @todo: add support for other types of compressed files.
+        if ($mime_type == 'application/zip') {
+            return self::extractZipFile($file_name);
+        }
 
-    return [FILES_DIRECTORY_ROOT . '/' . $file_name];
-  }
+        return [FILES_DIRECTORY_ROOT . '/' . $file_name];
+    }
 
   /**
    * Extracts the given zip file.
@@ -33,20 +34,21 @@ abstract class FilesHandler {
    *
    * @return array
    */
-  private static function extractZipFile($file_name) {
-    $zip_file_uri = FILES_DIRECTORY_ROOT . '/' . $file_name;
+    private static function extractZipFile($file_name)
+    {
+        $zip_file_uri = FILES_DIRECTORY_ROOT . '/' . $file_name;
 
-    $zip = new ZipArchive();
-    $zip->open($zip_file_uri);
-    $zip->extractTo(FILES_DIRECTORY_ROOT);
-    $zip->close();
+        $zip = new ZipArchive();
+        $zip->open($zip_file_uri);
+        $zip->extractTo(FILES_DIRECTORY_ROOT);
+        $zip->close();
 
-    // Remove zip file from the system.
-    $fs = new Filesystem();
-    $fs->remove($zip_file_uri);
+        // Remove zip file from the system.
+        $fs = new Filesystem();
+        $fs->remove($zip_file_uri);
 
-    return self::scanFolder(FILES_DIRECTORY_ROOT);
-  }
+        return self::scanFolder(FILES_DIRECTORY_ROOT);
+    }
 
   /**
    * Scans folder to get all files inside.
@@ -55,13 +57,14 @@ abstract class FilesHandler {
    *
    * @return array
    */
-  public static function scanFolder($dir) {
-    $files = [];
-    $finder = new Finder();
-    $finder->files()->in($dir);
-    foreach ($finder as $file) {
-      $files[] = $file->getRealPath();
+    public static function scanFolder($dir)
+    {
+        $files = [];
+        $finder = new Finder();
+        $finder->files()->in($dir);
+        foreach ($finder as $file) {
+            $files[] = $file->getRealPath();
+        }
+        return $files;
     }
-    return $files;
-  }
 }

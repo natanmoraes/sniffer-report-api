@@ -2,7 +2,7 @@
 
 namespace SnifferReport\Exception;
 
-
-class SnifferReportException extends \Exception {
+class SnifferReportException extends \Exception
+{
 
 }

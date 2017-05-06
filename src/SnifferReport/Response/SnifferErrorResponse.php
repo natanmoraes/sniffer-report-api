@@ -4,7 +4,8 @@ namespace SnifferReport\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class SnifferErrorResponse extends JsonResponse {
+class SnifferErrorResponse extends JsonResponse
+{
 
   /**
    * SnifferErrorResponse constructor.
@@ -14,14 +15,15 @@ class SnifferErrorResponse extends JsonResponse {
    * @param string $message
    * @param int $code
    */
-  public function __construct($message, $code = 500) {
+    public function __construct($message, $code = 500)
+    {
 
-    $data = [
-      'status' => 'error',
-      'code' => $code,
-      'message' => $message,
-    ];
+        $data = [
+        'status' => 'error',
+        'code' => $code,
+        'message' => $message,
+        ];
 
-    return parent::__construct(json_encode($data), $code, [], TRUE);
-  }
+        return parent::__construct(json_encode($data), $code, [], true);
+    }
 }

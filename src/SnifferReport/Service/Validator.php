@@ -4,7 +4,8 @@ namespace SnifferReport\Service;
 
 use \PHP_CodeSniffer;
 
-abstract class Validator {
+abstract class Validator
+{
 
   /**
    * Checks if a given url is a valid Git url.
@@ -15,28 +16,29 @@ abstract class Validator {
    * @return bool
    *   Whether the given URL is valid or not.
    */
-  public static function isGitUrl($url) {
-    if (!$url) {
-      return FALSE;
+    public static function isGitUrl($url)
+    {
+        if (!$url) {
+            return false;
+        }
+
+        // @todo: change validation to accept any git url.
+        $patterns = array(
+        '#git.drupal.org/project#',
+        '#git.drupal.org/sandbox#',
+        '#github.com#',
+        );
+
+        $valid = false;
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $url)) {
+                $valid = true;
+                break;
+            }
+        }
+
+        return $valid;
     }
-
-    // @todo: change validation to accept any git url.
-    $patterns = array(
-      '#git.drupal.org/project#',
-      '#git.drupal.org/sandbox#',
-      '#github.com#',
-    );
-
-    $valid = FALSE;
-    foreach ($patterns as $pattern) {
-      if (preg_match($pattern, $url)) {
-        $valid = TRUE;
-        break;
-      }
-    }
-
-    return $valid;
-  }
 
   /**
    * Checks if given standards are supported by the application.
@@ -47,15 +49,16 @@ abstract class Validator {
    * @return bool
    *   Whether the given standards are valid or not.
    */
-  public static function areStandardsValid(array $standards) {
-    foreach ($standards as $standard) {
-      if (!in_array($standard, PHP_CodeSniffer::getInstalledStandards())) {
-        return FALSE;
-      }
-    }
+    public static function areStandardsValid(array $standards)
+    {
+        foreach ($standards as $standard) {
+            if (!in_array($standard, PHP_CodeSniffer::getInstalledStandards())) {
+                return false;
+            }
+        }
 
-    return TRUE;
-  }
+        return true;
+    }
 
   /**
    * Validates if given extensions are supported by the application.
@@ -64,32 +67,34 @@ abstract class Validator {
    *
    * @return bool
    */
-  public static function areExtensionsValid(array $extensions) {
-    foreach ($extensions as $extension) {
-      if (!in_array($extension, self::getSupportedFileExtensions())) {
-        return FALSE;
-      }
-    }
+    public static function areExtensionsValid(array $extensions)
+    {
+        foreach ($extensions as $extension) {
+            if (!in_array($extension, self::getSupportedFileExtensions())) {
+                return false;
+            }
+        }
 
-    return TRUE;
-  }
+        return true;
+    }
 
   /**
    * Gets supported extensions.
    */
-  private static function getSupportedFileExtensions() {
-    return [
-      'php',
-      'module',
-      'inc',
-      'install',
-      'test',
-      'profile',
-      'theme',
-      'js',
-      'css',
-      'info',
-      'txt',
-    ];
-  }
+    private static function getSupportedFileExtensions()
+    {
+        return [
+        'php',
+        'module',
+        'inc',
+        'install',
+        'test',
+        'profile',
+        'theme',
+        'js',
+        'css',
+        'info',
+        'txt',
+        ];
+    }
 }
