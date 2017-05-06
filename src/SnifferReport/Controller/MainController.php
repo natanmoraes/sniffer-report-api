@@ -77,9 +77,6 @@ class MainController
         $fs = new Filesystem();
         $fs->remove(FILES_DIRECTORY_ROOT);
 
-        // @todo: Make class abstract
-        $sniffParser = new SniffParser();
-        $response = $sniffParser->parseSniff($sniff_result);
-        return $response;
+        return SniffParser::parseSniff($sniff_result);
     }
 }
