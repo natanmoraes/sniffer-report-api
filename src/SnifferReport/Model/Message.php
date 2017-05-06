@@ -4,7 +4,6 @@ namespace SnifferReport\Model;
 
 class Message implements \JsonSerializable
 {
-    private $messageId;
     private $message;
     private $source;
     private $severity;
@@ -22,22 +21,6 @@ class Message implements \JsonSerializable
         $this->setLine($line);
         $this->setColumn($column);
         $this->setFixable($fixable);
-    }
-
-  /**
-   * @return int
-   */
-    public function getMessageId()
-    {
-        return $this->messageId;
-    }
-
-  /**
-   * @param int $message_id
-   */
-    public function setMessageId($message_id)
-    {
-        $this->messageId = $message_id;
     }
 
   /**
@@ -158,14 +141,13 @@ class Message implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-        'message_id' => $this->getMessageId(),
-        'message' => $this->getMessage(),
-        'source' => $this->getSource(),
-        'severity' => $this->getSeverity(),
-        'type' => $this->getType(),
-        'line' => $this->getLine(),
-        'column' => $this->getColumn(),
-        'fixable' => $this->isFixable(),
+            'message' => $this->getMessage(),
+            'source' => $this->getSource(),
+            'severity' => $this->getSeverity(),
+            'type' => $this->getType(),
+            'line' => $this->getLine(),
+            'column' => $this->getColumn(),
+            'fixable' => $this->isFixable(),
         ];
     }
 }

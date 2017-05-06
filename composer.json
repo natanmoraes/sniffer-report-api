@@ -20,5 +20,8 @@
     "post-update-cmd": [
       "phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer"
     ]
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^3.2"
   }
 }

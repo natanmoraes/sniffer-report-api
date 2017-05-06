@@ -1,6 +1,5 @@
 <?php
 
-require_once '../config.php';
 require_once '../vendor/autoload.php';
 
 // Generate an unique directory name to store files in.
@@ -15,16 +14,6 @@ use SnifferReport\Response\SnifferSuccessResponse;
 
 $app = new Application();
 $app['debug'] = true;
-
-$app['pdo'] = function () use ($config) {
-    $pdo = new \PDO(
-        $config['pdo_dsn'],
-        $config['pdo_username'],
-        $config['pdo_password']
-    );
-    $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-    return $pdo;
-};
 
 // Receive files to be sniffed.
 // @todo: Make different urls for git url and files
@@ -54,7 +43,7 @@ $app->error(function (SnifferReportException $e) use ($app) {
 
 // Generic error handler when something unexpected happens.
 $app->error(function (\Exception $e) use ($app) {
-  // @todo: Add a log system with clearer messages for debug.
+    // @todo: Add a log system with clearer messages for debug.
     return new SnifferErrorResponse(
         'An unexpected error occurred. Please contact the support',
         500

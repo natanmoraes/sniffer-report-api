@@ -4,7 +4,6 @@ namespace SnifferReport\Model;
 
 class File implements \JsonSerializable
 {
-    private $fileId;
     private $name;
     private $messages = [];
 
@@ -21,22 +20,6 @@ class File implements \JsonSerializable
     public function addMessages(Message $message)
     {
         $this->messages[] = $message;
-    }
-
-  /**
-   * @return int
-   */
-    public function getFileId()
-    {
-        return $this->fileId;
-    }
-
-  /**
-   * @param int $file_id
-   */
-    public function setFileId($file_id)
-    {
-        $this->fileId = $file_id;
     }
 
   /**
@@ -70,7 +53,6 @@ class File implements \JsonSerializable
     {
         return [
             $this->getName() => [
-                'file_id' => $this->getFileId(),
                 'messages' => $this->getMessages(),
             ]
         ];

@@ -50,6 +50,14 @@ class MainController
             }
         }
 
+        // @fixme Temporary
+        if (empty($options)) {
+            throw new SnifferReportException(
+                'Missing options',
+                400
+            );
+        }
+
         $options = json_decode($options);
 
         if (!Validator::areStandardsValid($options->standards)) {
@@ -76,7 +84,8 @@ class MainController
         $fs->remove(FILES_DIRECTORY_ROOT);
 
         try {
-            $sniffParser = new SniffParser($app['pdo']);
+            // @todo: Make class abstract
+            $sniffParser = new SniffParser();
             $response = $sniffParser->parseSniff($sniff_result);
         } catch (\PDOException $e) {
             throw new SnifferReportException("Error when trying to save sniff: {$e->getMessage()}", 500);
