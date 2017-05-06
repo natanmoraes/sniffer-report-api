@@ -2,8 +2,9 @@
 
 namespace SnifferReport\Controller;
 
-use Silex\Application;
-use SnifferReport\Exception\SnifferReportException;
+use SnifferReport\Exception\InvalidStandardsException;
+use SnifferReport\Exception\GitCloneException;
+use SnifferReport\Exception\MissingFileOrGitParameterException;
 use SnifferReport\Model\Sniff;
 use SnifferReport\Service\Validator;
 use SnifferReport\Service\FilesHandler;
@@ -19,14 +20,16 @@ class MainController
     /**
      * Processes the POSTed data.
      *
-     * @param Application $app
      * @param Request $request
      *
      * @return Sniff
      *
-     * @throws SnifferReportException
+     * @throws Exception
+     * @throws GitCloneException
+     * @throws InvalidStandardsException
+     * @throws MissingFileOrGitParameterException
      */
-    public static function processSniff(Application $app, Request $request)
+    public static function processSniff(Request $request)
     {
         $file = $request->files->get('file');
         $git_url = $request->get('git_url');
@@ -34,7 +37,7 @@ class MainController
 
         $valid_git_url = (is_null($git_url) || !Validator::isGitUrl($git_url));
         if ($valid_git_url && is_null($file)) {
-            throw new SnifferReportException('File or Git URL required', 400);
+            throw new MissingFileOrGitParameterException();
         }
 
         if (!is_null($file)) {
@@ -45,13 +48,13 @@ class MainController
             try {
                 $files = GitHandler::handle($git_url);
             } catch (Exception $e) {
-                throw new SnifferReportException("Error when trying to clone git repository: {$e->getMessage()}", 500);
+                throw new GitCloneException($e);
             }
         }
 
         // @fixme Temporary
         if (empty($options)) {
-            throw new SnifferReportException(
+            throw new \Exception(
                 'Missing options',
                 400
             );
@@ -60,18 +63,10 @@ class MainController
         $options = json_decode($options);
 
         if (!Validator::areStandardsValid($options->standards)) {
-            throw new SnifferReportException(
-                'One or more standards are not valid. Please try again with different values',
-                400
-            );
+            throw new InvalidStandardsException();
         }
 
-        if (!Validator::areExtensionsValid($options->extensions)) {
-            throw new SnifferReportException(
-                'One or more extensions are not valid. Please try again with different values',
-                400
-            );
-        }
+        // @fixme: handle extensions and ignoring specific files/folders
 
         $standards = implode(',', $options->standards);
         $extensions = implode(',', $options->extensions);
@@ -82,14 +77,9 @@ class MainController
         $fs = new Filesystem();
         $fs->remove(FILES_DIRECTORY_ROOT);
 
-        try {
-            // @todo: Make class abstract
-            $sniffParser = new SniffParser();
-            $response = $sniffParser->parseSniff($sniff_result);
-        } catch (\PDOException $e) {
-            throw new SnifferReportException("Error when trying to save sniff: {$e->getMessage()}", 500);
-        }
-
+        // @todo: Make class abstract
+        $sniffParser = new SniffParser();
+        $response = $sniffParser->parseSniff($sniff_result);
         return $response;
     }
 }

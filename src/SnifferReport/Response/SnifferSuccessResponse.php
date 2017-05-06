@@ -17,7 +17,6 @@ class SnifferSuccessResponse extends JsonResponse
      */
     public function __construct(Sniff $sniff, $code = 200)
     {
-
         $data = [
             'status' => 'success',
             'code' => $code,

@@ -4,15 +4,15 @@ namespace SnifferReport\Service;
 
 abstract class Sniffer
 {
-  /**
-   * Run PHPCS on given files.
-   *
-   * @param array $files
-   * @param string $standards
-   * @param string $extensions
-   *
-   * @return array
-   */
+    /**
+     * Run PHPCS on given files.
+     *
+     * @param array $files
+     * @param string $standards
+     * @param string $extensions
+     *
+     * @return array
+     */
     public static function sniffFiles(array $files, $standards = '', $extensions = '')
     {
         $results = [];
@@ -27,15 +27,15 @@ abstract class Sniffer
         return $results;
     }
 
-  /**
-   * Run PHPCS in a single file.
-   *
-   * @param $file
-   * @param string $standards
-   * @param string $extensions
-   *
-   * @return string|null
-   */
+    /**
+     * Run PHPCS in a single file.
+     *
+     * @param $file
+     * @param string $standards
+     * @param string $extensions
+     *
+     * @return string|null
+     */
     private static function sniffFile($file, $standards = '', $extensions = '')
     {
         $command = COMPOSER_VENDOR_DIR . '/bin/phpcs';

@@ -9,13 +9,13 @@ use SnifferReport\Model\Message;
 class SniffParser
 {
 
-  /**
-   * Parses CodeSniffer results into a Sniff object.
-   *
-   * @param $sniff_results
-   *
-   * @return Sniff
-   */
+    /**
+     * Parses CodeSniffer results into a Sniff object.
+     *
+     * @param $sniff_results
+     *
+     * @return Sniff
+     */
     public function parseSniff($sniff_results)
     {
         $sniff = new Sniff();
@@ -28,14 +28,14 @@ class SniffParser
         return $sniff;
     }
 
-  /**
-   * Parses a file from the CodeSniffer result into an object.
-   *
-   * @param $file_name
-   * @param $sniff_result
-   *
-   * @return File
-   */
+    /**
+     * Parses a file from the CodeSniffer result into an object.
+     *
+     * @param $file_name
+     * @param $sniff_result
+     *
+     * @return File
+     */
     private function parseFile($file_name, $sniff_result)
     {
         $file = new File($file_name);
@@ -46,13 +46,13 @@ class SniffParser
         return $file;
     }
 
-  /**
-   * Parses a message from the CodeSniffer file into an object.
-   *
-   * @param $sniff_message
-   *
-   * @return Message
-   */
+    /**
+     * Parses a message from the CodeSniffer file into an object.
+     *
+     * @param $sniff_message
+     *
+     * @return Message
+     */
     private function parseMessage($sniff_message)
     {
         $message = $sniff_message->message;

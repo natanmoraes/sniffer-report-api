@@ -53,7 +53,7 @@ abstract class FilesHandler
     /**
      * Scans folder to get all files inside.
      *
-     * @param $dir
+     * @param string $dir
      *
      * @return array
      */

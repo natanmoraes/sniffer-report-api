@@ -7,15 +7,15 @@ use \PHP_CodeSniffer;
 abstract class Validator
 {
 
-  /**
-   * Checks if a given url is a valid Git url.
-   *
-   * @param $url
-   *   The URL to be checked.
-   *
-   * @return bool
-   *   Whether the given URL is valid or not.
-   */
+    /**
+     * Checks if a given url is a valid Git url.
+     *
+     * @param $url
+     *   The URL to be checked.
+     *
+     * @return bool
+     *   Whether the given URL is valid or not.
+     */
     public static function isGitUrl($url)
     {
         if (!$url) {
@@ -24,9 +24,9 @@ abstract class Validator
 
         // @todo: change validation to accept any git url.
         $patterns = array(
-        '#git.drupal.org/project#',
-        '#git.drupal.org/sandbox#',
-        '#github.com#',
+            '#git.drupal.org/project#',
+            '#git.drupal.org/sandbox#',
+            '#github.com#',
         );
 
         $valid = false;
@@ -40,15 +40,15 @@ abstract class Validator
         return $valid;
     }
 
-  /**
-   * Checks if given standards are supported by the application.
-   *
-   * @param array $standards
-   *   The standards to be validated
-   *
-   * @return bool
-   *   Whether the given standards are valid or not.
-   */
+    /**
+     * Checks if given standards are supported by the application.
+     *
+     * @param array $standards
+     *   The standards to be validated
+     *
+     * @return bool
+     *   Whether the given standards are valid or not.
+     */
     public static function areStandardsValid(array $standards)
     {
         foreach ($standards as $standard) {
@@ -58,43 +58,5 @@ abstract class Validator
         }
 
         return true;
-    }
-
-  /**
-   * Validates if given extensions are supported by the application.
-   *
-   * @param array $extensions
-   *
-   * @return bool
-   */
-    public static function areExtensionsValid(array $extensions)
-    {
-        foreach ($extensions as $extension) {
-            if (!in_array($extension, self::getSupportedFileExtensions())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-  /**
-   * Gets supported extensions.
-   */
-    private static function getSupportedFileExtensions()
-    {
-        return [
-        'php',
-        'module',
-        'inc',
-        'install',
-        'test',
-        'profile',
-        'theme',
-        'js',
-        'css',
-        'info',
-        'txt',
-        ];
     }
 }
