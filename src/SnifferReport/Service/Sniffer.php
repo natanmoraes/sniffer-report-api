@@ -8,16 +8,16 @@ abstract class Sniffer
      * Run PHPCS on given files.
      *
      * @param array $files
-     * @param string $standards
-     * @param string $extensions
+     * @param array $options
      *
      * @return array
      */
-    public static function sniffFiles(array $files, $standards = '', $extensions = '')
+    public static function sniffFiles(array $files, $standards, array $options)
     {
         $results = [];
         foreach ($files as $file) {
-            $sniff_result = self::sniffFile($file, $standards, $extensions);
+            // @fixme: check if file fits include/exclude criteria before sniffing.
+            $sniff_result = self::sniffFile($file, $standards);
             if (is_null($sniff_result)) {
                 continue;
             }
@@ -30,24 +30,16 @@ abstract class Sniffer
     /**
      * Run PHPCS in a single file.
      *
-     * @param $file
+     * @param string $file
      * @param string $standards
-     * @param string $extensions
      *
      * @return string|null
      */
-    private static function sniffFile($file, $standards = '', $extensions = '')
+    private static function sniffFile($file, $standards)
     {
         $command = COMPOSER_VENDOR_DIR . '/bin/phpcs';
 
-        if (!empty($standards)) {
-            $command .= " --standard=$standards";
-        }
-
-        // @fixme: handle extensions properly (ex: the code is trying to sniff a .json file)
-        if (!empty($extensions)) {
-            $command .= " --extensions=$extensions";
-        }
+        $command .= " --standard={$standards}";
 
         $command .= ' --report=json';
 

@@ -6,6 +6,7 @@ use SnifferReport\Exception\InvalidStandardsException;
 use SnifferReport\Exception\GitCloneException;
 use SnifferReport\Exception\MissingFileOrGitParameterException;
 use SnifferReport\Model\Sniff;
+use SnifferReport\Service\OptionsParser;
 use SnifferReport\Service\Validator;
 use SnifferReport\Service\FilesHandler;
 use SnifferReport\Service\GitHandler;
@@ -33,6 +34,7 @@ class MainController
     {
         $file = $request->files->get('file');
         $git_url = $request->get('git_url');
+        $standards = $request->get('standards');
         $options = $request->get('options');
 
         $valid_git_url = (is_null($git_url) || !Validator::isGitUrl($git_url));
@@ -52,27 +54,12 @@ class MainController
             }
         }
 
-        // @fixme Temporary
-        if (empty($options)) {
-            throw new \Exception(
-                'Missing options',
-                400
-            );
-        }
-
-        $options = json_decode($options);
-
-        if (!Validator::areStandardsValid($options->standards)) {
+        if (!Validator::areAllStandardsValid($standards)) {
             throw new InvalidStandardsException();
         }
 
-        // @fixme: handle extensions and ignoring specific files/folders
-
-        $standards = implode(',', $options->standards);
-        $extensions = implode(',', $options->extensions);
-
-        $sniff_result = Sniffer::sniffFiles($files, $standards, $extensions);
-
+        $parsed_options = OptionsParser::parseOptions($options);
+        $sniff_result = Sniffer::sniffFiles($files, $standards, $parsed_options);
         // Delete all files that were generated in this request.
         $fs = new Filesystem();
         $fs->remove(FILES_DIRECTORY_ROOT);

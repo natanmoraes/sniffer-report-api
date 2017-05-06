@@ -6,7 +6,6 @@ use \PHP_CodeSniffer;
 
 abstract class Validator
 {
-
     /**
      * Checks if a given url is a valid Git url.
      *
@@ -43,16 +42,18 @@ abstract class Validator
     /**
      * Checks if given standards are supported by the application.
      *
-     * @param array $standards
+     * @param string $standards
      *   The standards to be validated
      *
      * @return bool
      *   Whether the given standards are valid or not.
      */
-    public static function areStandardsValid(array $standards)
+    public static function areAllStandardsValid($standards)
     {
+        $standards = explode(',', $standards);
+        $installed_standards = PHP_CodeSniffer::getInstalledStandards();
         foreach ($standards as $standard) {
-            if (!in_array($standard, PHP_CodeSniffer::getInstalledStandards())) {
+            if (!in_array($standard, $installed_standards)) {
                 return false;
             }
         }
