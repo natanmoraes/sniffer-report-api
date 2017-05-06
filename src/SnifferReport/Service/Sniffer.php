@@ -8,6 +8,7 @@ abstract class Sniffer
      * Run PHPCS on given files.
      *
      * @param array $files
+     * @param string $standards
      * @param array $options
      *
      * @return array
@@ -16,7 +17,9 @@ abstract class Sniffer
     {
         $results = [];
         foreach ($files as $file) {
-            // @fixme: check if file fits include/exclude criteria before sniffing.
+            if (!is_null($options)) {
+                // @fixme: check if file fits include/exclude criteria before sniffing.
+            }
             $sniff_result = self::sniffFile($file, $standards);
             if (is_null($sniff_result)) {
                 continue;
