@@ -9,14 +9,14 @@ use \ZipArchive;
 abstract class FilesHandler
 {
 
-  /**
-   * Handles the given file
-   *
-   * @param $file_name
-   * @param $mime_type
-   *
-   * @return array
-   */
+    /**
+     * Handles the given file
+     *
+     * @param $file_name
+     * @param $mime_type
+     *
+     * @return array
+     */
     public static function handle($file_name, $mime_type)
     {
         // @todo: add support for other types of compressed files.
@@ -27,13 +27,13 @@ abstract class FilesHandler
         return [FILES_DIRECTORY_ROOT . '/' . $file_name];
     }
 
-  /**
-   * Extracts the given zip file.
-   *
-   * @param $file_name
-   *
-   * @return array
-   */
+    /**
+     * Extracts the given zip file.
+     *
+     * @param $file_name
+     *
+     * @return array
+     */
     private static function extractZipFile($file_name)
     {
         $zip_file_uri = FILES_DIRECTORY_ROOT . '/' . $file_name;
@@ -50,13 +50,13 @@ abstract class FilesHandler
         return self::scanFolder(FILES_DIRECTORY_ROOT);
     }
 
-  /**
-   * Scans folder to get all files inside.
-   *
-   * @param $dir
-   *
-   * @return array
-   */
+    /**
+     * Scans folder to get all files inside.
+     *
+     * @param $dir
+     *
+     * @return array
+     */
     public static function scanFolder($dir)
     {
         $files = [];

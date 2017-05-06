@@ -23,121 +23,121 @@ class Message implements \JsonSerializable
         $this->setFixable($fixable);
     }
 
-  /**
-   * @return string
-   */
+    /**
+     * @return string
+     */
     public function getMessage()
     {
         return $this->message;
     }
 
-  /**
-   * @param string $message
-   */
+    /**
+     * @param string $message
+     */
     public function setMessage($message)
     {
         $this->message = $message;
     }
 
-  /**
-   * @return string
-   */
+    /**
+     * @return string
+     */
     public function getSource()
     {
         return $this->source;
     }
 
-  /**
-   * @param string $source
-   */
+    /**
+     * @param string $source
+     */
     public function setSource($source)
     {
         $this->source = $source;
     }
 
-  /**
-   * @return int
-   */
+    /**
+     * @return int
+     */
     public function getSeverity()
     {
         return $this->severity;
     }
 
-  /**
-   * @param int $severity
-   */
+    /**
+     * @param int $severity
+     */
     public function setSeverity($severity)
     {
         $this->severity = $severity;
     }
 
-  /**
-   * @return string
-   */
+    /**
+     * @return string
+     */
     public function getType()
     {
         return $this->type;
     }
 
-  /**
-   * @param string $type
-   */
+    /**
+     * @param string $type
+     */
     public function setType($type)
     {
         $this->type = $type;
     }
 
-  /**
-   * @return int
-   */
+    /**
+     * @return int
+     */
     public function getLine()
     {
         return $this->line;
     }
 
-  /**
-   * @param int $line
-   */
+    /**
+     * @param int $line
+     */
     public function setLine($line)
     {
         $this->line = $line;
     }
 
-  /**
-   * @return int
-   */
+    /**
+     * @return int
+     */
     public function getColumn()
     {
         return $this->column;
     }
 
-  /**
-   * @param int $column
-   */
+    /**
+     * @param int $column
+     */
     public function setColumn($column)
     {
         $this->column = $column;
     }
 
-  /**
-   * @return boolean
-   */
+    /**
+     * @return boolean
+     */
     public function isFixable()
     {
         return $this->fixable;
     }
 
-  /**
-   * @param boolean $fixable
-   */
+    /**
+     * @param boolean $fixable
+     */
     public function setFixable($fixable)
     {
         $this->fixable = $fixable;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function jsonSerialize()
     {
         return [

@@ -16,17 +16,16 @@ use \Exception;
 
 class MainController
 {
-
-  /**
-   * Processes the POSTed data.
-   *
-   * @param Application $app
-   * @param Request $request
-   *
-   * @return Sniff
-   *
-   * @throws SnifferReportException
-   */
+    /**
+     * Processes the POSTed data.
+     *
+     * @param Application $app
+     * @param Request $request
+     *
+     * @return Sniff
+     *
+     * @throws SnifferReportException
+     */
     public static function processSniff(Application $app, Request $request)
     {
         $file = $request->files->get('file');

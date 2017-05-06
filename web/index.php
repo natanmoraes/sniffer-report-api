@@ -19,18 +19,6 @@ $app['debug'] = true;
 // @todo: Make different urls for git url and files
 $app->post('/sniff', 'SnifferReport\\Controller\\MainController::processSniff');
 
-// @todo: View the complete result of a sniff.
-//$app->get('/sniffs/{sid}', function($sid) {});
-
-// @todo: View all files sniffed (no messages).
-//$app->get('/sniffs/{sid}/files', function($sid) {});
-
-// @todo: View all messages from a single sniffed file
-//$app->get('/sniffs/{sid}/files/{fid}', function($sid, $fid) {});
-
-// @todo: View a single message in a sniffed file
-//$app->get('/sniffs/{sid}/files/{fid}/messages/{mid}', function($sid, $fid, $mid) {});
-
 // Main default response handler
 $app->view(function ($response) use ($app) {
     return new SnifferSuccessResponse($response);

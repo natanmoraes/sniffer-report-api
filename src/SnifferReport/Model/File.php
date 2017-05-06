@@ -12,43 +12,43 @@ class File implements \JsonSerializable
         $this->setName($name);
     }
 
-  /**
-   * Adds a new message to the sniffed file.
-   *
-   * @param Message $message
-   */
+    /**
+     * Adds a new message to the sniffed file.
+     *
+     * @param Message $message
+     */
     public function addMessages(Message $message)
     {
         $this->messages[] = $message;
     }
 
-  /**
-   * @return string
-   */
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
-  /**
-   * @param string $name
-   */
+    /**
+     * @param string $name
+     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
-  /**
-   * @return Message[]
-   */
+    /**
+     * @return Message[]
+     */
     public function getMessages()
     {
         return $this->messages;
     }
 
-  /**
-   * {@inheritdoc}
-   */
+    /**
+     * {@inheritdoc}
+     */
     public function jsonSerialize()
     {
         return [
