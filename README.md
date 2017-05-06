@@ -1,0 +1,1 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/natanmoraes/sniffer-report-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/natanmoraes/sniffer-report-api/?branch=master)
