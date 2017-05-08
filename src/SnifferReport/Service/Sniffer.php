@@ -9,16 +9,17 @@ abstract class Sniffer
      *
      * @param array $files
      * @param string $standards
-     * @param array $options
+     * @param string $exclusion_list
      *
      * @return array
+     *
      */
-    public static function sniffFiles(array $files, $standards, array $options)
+    public static function sniffFiles(array $files, $standards, $exclusion_list)
     {
         $results = [];
         foreach ($files as $file) {
-            if (!is_null($options)) {
-                // @fixme: check if file fits include/exclude criteria before sniffing.
+            if (!Validator::fileShouldBeSniffed($file, $exclusion_list)) {
+                continue;
             }
             $sniff_result = self::sniffFile($file, $standards);
             if (is_null($sniff_result)) {

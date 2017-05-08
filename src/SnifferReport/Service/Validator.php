@@ -3,6 +3,7 @@
 namespace SnifferReport\Service;
 
 use \PHP_CodeSniffer;
+use SnifferReport\Exception\UnableToParseExclusionListException;
 
 abstract class Validator
 {
@@ -54,6 +55,33 @@ abstract class Validator
         $installed_standards = PHP_CodeSniffer::getInstalledStandards();
         foreach ($standards as $standard) {
             if (!in_array($standard, $installed_standards)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Validates if given file should be sniffed based on sent options.
+     *
+     * @param string $file
+     * @param string $exclusion_list
+     *
+     * @return bool
+     *
+     * @throws UnableToParseExclusionListException
+     */
+    public static function fileShouldBeSniffed($file, $exclusion_list)
+    {
+        $file_list = json_decode($exclusion_list);
+
+        if (!empty($exclusion_list) && empty($file_list)) {
+            throw new UnableToParseExclusionListException();
+        }
+
+        foreach ($file_list as $item) {
+            if (strpos($item, $file)) {
                 return false;
             }
         }

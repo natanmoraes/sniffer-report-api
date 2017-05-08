@@ -31,7 +31,7 @@ $app->error(function (SnifferReportException $e) use ($app) {
 
 // Generic error handler when something unexpected happens.
 $app->error(function (\Exception $e) use ($app) {
-    // @todo: Add a log system with clear messages for debugging.
+    // @fixme: Add a log system with clear messages for debugging.
     return new SnifferErrorResponse('An unexpected error occurred. Please contact the support.');
 });
 

@@ -35,7 +35,7 @@ class MainController
         $file = $request->files->get('file');
         $git_url = $request->get('git_url');
         $standards = $request->get('standards');
-        $options = $request->get('options');
+        $exclude = $request->get('exclude');
 
         $valid_git_url = (is_null($git_url) || !Validator::isGitUrl($git_url));
         if ($valid_git_url && is_null($file)) {
@@ -58,8 +58,7 @@ class MainController
             throw new InvalidStandardsException();
         }
 
-        $parsed_options = OptionsParser::parseOptions($options);
-        $sniff_result = Sniffer::sniffFiles($files, $standards, $parsed_options);
+        $sniff_result = Sniffer::sniffFiles($files, $standards, $exclude);
         // Delete all files that were generated in this request.
         $fs = new Filesystem();
         $fs->remove(FILES_DIRECTORY_ROOT);
