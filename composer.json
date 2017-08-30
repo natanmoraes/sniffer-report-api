@@ -6,7 +6,8 @@
     "gitonomy/gitlib": "~1.0",
     "symfony/finder": "~3.1",
     "drupal/coder": "~8.0",
-    "symfony/filesystem": "~3.1"
+    "symfony/filesystem": "~3.1",
+    "monolog/monolog": "~1.22"
   },
   "autoload": {
     "psr-4": {
